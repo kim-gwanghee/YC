@@ -1,0 +1,23 @@
+comments:
+  allowedFields: ["name", "comment", "pageTitle"]
+  requiredFields: ["comment"]
+  branch: "main"
+  commitMessage: "chore: add comment to {options.slug}"
+  path: "comments/{options.slug}"
+  filename: "comment-{timestamp}"
+  format: "json"
+  moderation: true        # PR 생성 후 머지 필요
+  allowedOrigins: ["yc-essays-kr.github.io", "localhost", "127.0.0.1"]
+  generatedFields:
+    date:
+      type: date
+      options:
+        format: iso8601
+  transforms:
+    comment: "trim"
+    name: "trim"
+  # reCaptcha 설정이 있다면 아래 주석을 해제하고 사이트 키/시크릿을 추가하세요.
+  # reCaptcha:
+  #   enabled: true
+  #   siteKey: ""
+  #   secret: ""
