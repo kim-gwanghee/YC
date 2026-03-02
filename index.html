@@ -4111,6 +4111,13 @@
             const essay = essays.find(e => e.id === essayId);
             if (!essay) return;
 
+            gtag('event', 'essay_open', {
+                essay_id: essayId,
+                essay_title_en: essay.titleEn,
+                essay_title_ko: essay.titleKo,
+                essay_category: essay.category
+            });
+
             // Show detail view
             document.getElementById('mainView').classList.add('hidden');
             document.getElementById('essayDetail').classList.add('active');
@@ -4227,7 +4234,9 @@
             // Category buttons
             document.querySelectorAll('.category-button').forEach(button => {
                 button.addEventListener('click', (e) => {
-                    handleCategoryClick(e.currentTarget.dataset.category);
+                    const cat = e.currentTarget.dataset.category;
+                    gtag('event', 'category_filter', { category: cat });
+                    handleCategoryClick(cat);
                 });
             });
 
@@ -4238,6 +4247,9 @@
                 clearTimeout(debounceTimer);
                 debounceTimer = setTimeout(() => {
                     searchTerm = e.target.value;
+                    if (searchTerm.length >= 2) {
+                        gtag('event', 'search', { search_term: searchTerm });
+                    }
                     displayCount = PAGE_SIZE;
                     renderEssays();
                 }, 300);
@@ -4246,6 +4258,7 @@
             // Sort
             document.getElementById('sortSelect').addEventListener('change', (e) => {
                 sortOrder = e.target.value;
+                gtag('event', 'sort_change', { sort_order: sortOrder });
                 renderEssays();
             });
 
